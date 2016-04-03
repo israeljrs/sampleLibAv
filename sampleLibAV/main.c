@@ -8,8 +8,8 @@
 
 #include <stdio.h>
 #include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
-#include <libavutil/avutil.h>
+// #include <libavcodec/avcodec.h>
+// #include <libavutil/avutil.h>
 
 int main(int argc, const char * argv[])
 {
