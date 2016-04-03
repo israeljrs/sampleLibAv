@@ -14,12 +14,13 @@
 int main(int argc, const char * argv[])
 {
 
-    char file[] = "/Users/israeljrs/Movies/Hillsong-At-the-Cross.mp4";
+    // char file[] = "/Users/israeljrs/Movies/sample.mp4";
+    int nsv, nsa = 0;
     
     AVFormatContext *pFormatCtx = NULL;
     av_register_all();
     
-    if (avformat_open_input(&pFormatCtx, file, NULL, NULL) != 0) {
+    if (avformat_open_input(&pFormatCtx, argv[1], NULL, NULL) != 0) {
         printf("Formato de arquivo não suportado !!!\n");
         return -1;
     }
@@ -29,7 +30,28 @@ int main(int argc, const char * argv[])
         return 1;
     }
     
-    av_dump_format(pFormatCtx, 0, file, 0);
+    // av_dump_format(pFormatCtx, 0, file, 0);
+    // printf("libavformat version : %d\n", avformat_version());
+    // printf("Licença : %s\n", avformat_configuration());
+    printf("File name : %s\n", pFormatCtx->filename);
+    printf("Format Input name : %s\n", pFormatCtx->iformat->name);
+    printf("Format Input long name : %s\n", pFormatCtx->iformat->long_name);
+    printf("Format Input extension : %s\n", pFormatCtx->iformat->extensions);
+    printf("Format Input mimeType : %s\n", pFormatCtx->iformat->mime_type);
+    printf("Stream Numbers : %d\n", pFormatCtx->nb_streams);
+    for (int i = 0; i < pFormatCtx->nb_streams; i++) {
+        if (pFormatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO) {
+            nsv++;
+        }
+    }
+    printf("Number Stream the video : %d\n", nsv);
+    
+    for (int i = 0; i < pFormatCtx->nb_streams; i++) {
+        if (pFormatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_AUDIO) {
+            nsa++;
+        }
+    }
+    printf("Number Stream the audio : %d\n", nsa);
     
     avformat_close_input(&pFormatCtx);
     
