@@ -20,6 +20,13 @@ int main(int argc, const char * argv[])
     AVFormatContext *pFormatCtx = NULL;
     av_register_all();
     
+    if (argc != 2) {
+        printf("usage: %s <input_file>\n"
+               "example program to demonstrate the use of the libavformat API.\n"
+               "\n", argv[0]);
+        return 1;
+    }
+    
     if (avformat_open_input(&pFormatCtx, argv[1], NULL, NULL) != 0) {
         printf("Formato de arquivo não suportado !!!\n");
         return -1;
