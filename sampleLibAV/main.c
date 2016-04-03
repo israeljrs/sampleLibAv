@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <libavformat/avformat.h>
 // #include <libavcodec/avcodec.h>
-// #include <libavutil/avutil.h>
+#include <libavutil/avutil.h>
 
 int main(int argc, const char * argv[])
 {
@@ -18,7 +18,7 @@ int main(int argc, const char * argv[])
     int nsv, nsa = 0;
     
     AVFormatContext *pFormatCtx = NULL;
-    av_register_all();
+    AVDictionaryEntry *tag = NULL;
     
     if (argc != 2) {
         printf("usage: %s <input_file>\n"
@@ -26,6 +26,8 @@ int main(int argc, const char * argv[])
                "\n", argv[0]);
         return 1;
     }
+    
+    av_register_all();
     
     if (avformat_open_input(&pFormatCtx, argv[1], NULL, NULL) != 0) {
         printf("Formato de arquivo não suportado !!!\n");
@@ -60,9 +62,13 @@ int main(int argc, const char * argv[])
     }
     printf("Number Stream the audio : %d\n", nsa);
     
+    // print metadata of file.
+    while ((tag = av_dict_get(pFormatCtx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX)))
+        printf("%s=%s\n", tag->key, tag->value);
+    
     avformat_close_input(&pFormatCtx);
     
-    printf("Sample the use of FFmpeg API !!!\n");
+    printf("\nSample the use of FFmpeg API !!!\n");
     return 0;
 }
 
